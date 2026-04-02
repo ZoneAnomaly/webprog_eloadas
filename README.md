@@ -1,3 +1,5 @@
+(A README.md-t változtatni fogjuk a jövőben)
+
 Megadott feladatok:
 
 Föoldal Menü,
