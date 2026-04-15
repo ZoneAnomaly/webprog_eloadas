@@ -19,11 +19,7 @@ body {
   padding: 40px 20px;
 }
 
-.container {
-  width: 100%;
-  max-width: 900px;
-  animation: fadeIn 0.5s ease-out;
-}
+.container { text-align: center; font-family: Arial, sans-serif; background: #dfd4c3; min-height: 100vh; color: white; padding: 20px; }
 
 h1 {
   text-align: center;

@@ -1,147 +1,147 @@
-import { useState } from 'react'
-import './App.css'
+import React, { useState } from 'react';
 
-function App() 
-{
-  // Kezdő adatok (opcionális)
-  const initialCinemas = [
-    { id: "101", name: "Corvin Mozi", city: "Budapest", capacity: 450 },
-    { id: "102", name: "Apolló Mozi", city: "Pécs", capacity: 200 }
-  ];
+const MoziApp = () => {
+  const [mozik, setMozik] = useState([
+    { id: 1, nev: "Corvin Mozi", varos: "Budapest", ferohely: 450 },
+    { id: 2, nev: "Apolló Mozi", varos: "Pécs", ferohely: 120 }
+  ]);
 
-  // State-ek kezelése
-  const [cinemas, setCinemas] = useState(initialCinemas);
-  const [formData, setFormData] = useState({ id: '', name: '', city: '', capacity: '' });
-  const [isEditing, setIsEditing] = useState(false);
+  const [form, setForm] = useState({ id: '', nev: '', varos: '', ferohely: '' });
+  const [szerkesztesAlatt, setSzerkesztesAlatt] = useState(false);
 
-  // Input változás kezelése
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: name === "capacity" ? parseInt(value) || '' : value
-    });
+    const formattedValue = (name === 'id' || name === 'ferohely') ? (value === '' ? '' : Number(value)) : value;
+    setForm({ ...form, [name]: formattedValue });
   };
 
-  // Hozzáadás vagy Frissítés
   const handleSubmit = (e) => {
     e.preventDefault();
-    
-    if (!formData.id || !formData.name || !formData.city || !formData.capacity) {
-      alert("Kérlek tölts ki minden mezőt megfelelően!");
-      return;
-    }
-
-    if (isEditing) {
-      // Update
-      setCinemas(cinemas.map(c => (c.id === formData.id ? formData : c)));
-      setIsEditing(false);
+    if (szerkesztesAlatt) {
+      setMozik(mozik.map(m => m.id === form.id ? form : m));
+      setSzerkesztesAlatt(false);
     } else {
-      // Create - Ellenőrizzük, hogy az ID egyedi-e
-      if (cinemas.find(c => c.id === formData.id)) {
-        alert("Ez a Mozi ID már létezik!");
+      if (mozik.some(m => m.id === form.id)) {
+        alert("Hiba: Ez az ID már létezik!");
         return;
       }
-      setCinemas([...cinemas, formData]);
+      setMozik([...mozik, form]);
     }
-    
-    setFormData({ id: '', name: '', city: '', capacity: '' }); // Form ürítése
+    setForm({ id: '', nev: '', varos: '', ferohely: '' });
   };
 
-  // Szerkesztés betöltése
-  const handleEdit = (cinema) => {
-    setFormData(cinema);
-    setIsEditing(true);
-  };
-
-  // Törlés
   const handleDelete = (id) => {
-    if (window.confirm("Biztosan törölni szeretnéd ezt a mozit?")) {
-      setCinemas(cinemas.filter(c => c.id !== id));
-    }
+    setMozik(mozik.filter(m => m.id !== id));
+  };
+
+  const handleEdit = (mozi) => {
+    setForm(mozi);
+    setSzerkesztesAlatt(true);
+  };
+
+  // Közös stílusok az átláthatóságért
+  const styles = {
+    container: { padding: '20px', maxWidth: '1000px', margin: '0 auto', fontFamily: 'Segoe UI, Tahoma, sans-serif' },
+    formBox: { background: '#f0f2f5', padding: '25px', borderRadius: '12px', marginBottom: '30px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' },
+    inputGroup: { marginBottom: '15px' },
+    label: { display: 'block', marginBottom: '5px', fontWeight: 'bold' },
+    input: { width: '100%', padding: '10px', boxSizing: 'border-box', borderRadius: '6px', border: '1px solid #ccc' },
+    button: { padding: '10px 20px', cursor: 'pointer', borderRadius: '6px', border: 'none', fontWeight: 'bold' },
+    saveBtn: { backgroundColor: '#28a745', color: 'white', marginRight: '10px' },
+    cancelBtn: { backgroundColor: '#6c757d', color: 'white' },
+    table: { width: '100%', borderCollapse: 'collapse', marginTop: '10px' },
+    th: { background: '#343a40', color: 'white', padding: '12px', textAlign: 'left' },
+    td: { padding: '12px', borderBottom: '1px solid #dee2e6' },
+    actionBtn: { padding: '6px 12px', marginRight: '5px', cursor: 'pointer' }
   };
 
   return (
-    <div className="container">
-      <h1>Helyi Mozi Kezelő (React CRUD)</h1>
+    <div style={styles.container}>
+      <h1 style={{ color: '#333' }}>Helyi Mozi Kezelő (React CRUD)</h1>
 
-      {/* Form Szekció */}
-      <form onSubmit={handleSubmit} className="cinema-form">
-        <h3>{isEditing ? "Mozi Szerkesztése" : "Új Mozi Hozzáadása"}</h3>
-        <input
-          type="text"
-          name="id"
-          placeholder="Mozi ID (pl. 101)"
-          value={formData.id}
-          onChange={handleInputChange}
-          disabled={isEditing} // Szerkesztésnél az ID-t ne lehessen módosítani
-        />
-        <input
-          type="text"
-          name="name"
-          placeholder="Mozi neve"
-          value={formData.name}
-          onChange={handleInputChange}
-        />
-        <input
-          type="text"
-          name="city"
-          placeholder="Forgatási város"
-          value={formData.city}
-          onChange={handleInputChange}
-        />
-        <input
-          type="number"
-          name="capacity"
-          placeholder="Férőhely (szám)"
-          value={formData.capacity}
-          onChange={handleInputChange}
-          min="1"
-        />
-        <button type="submit" className="btn-save">
-          {isEditing ? "Mentés" : "Hozzáadás"}
-        </button>
-        {isEditing && (
-          <button type="button" className="btn-cancel" onClick={() => { setIsEditing(false); setFormData({ id: '', name: '', city: '', capacity: '' }); }}>
-            Mégse
-          </button>
-        )}
-      </form>
+      {/* Űrlap rész */}
+      <div style={styles.formBox}>
+        <h3 style={{ marginTop: 0 }}>{szerkesztesAlatt ? "Adatok szerkesztése" : "Új mozi hozzáadása"}</h3>
+        <form onSubmit={handleSubmit}>
+          <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+            <div style={{ flex: '1', minWidth: '150px' }}>
+              <label style={styles.label}>Mozi ID (Szám):</label>
+              <input 
+                style={styles.input} 
+                name="id" 
+                type="number" 
+                value={form.id} 
+                onChange={handleInputChange} 
+                disabled={szerkesztesAlatt} 
+                required 
+              />
+            </div>
+            <div style={{ flex: '2', minWidth: '200px' }}>
+              <label style={styles.label}>Mozi Neve:</label>
+              <input style={styles.input} name="nev" value={form.nev} onChange={handleInputChange} required />
+            </div>
+            <div style={{ flex: '1', minWidth: '150px' }}>
+              <label style={styles.label}>Város:</label>
+              <input style={styles.input} name="varos" value={form.varos} onChange={handleInputChange} required />
+            </div>
+            <div style={{ flex: '1', minWidth: '120px' }}>
+              <label style={styles.label}>Férőhely:</label>
+              <input style={styles.input} name="ferohely" type="number" value={form.ferohely} onChange={handleInputChange} required />
+            </div>
+          </div>
+          
+          <div style={{ marginTop: '20px' }}>
+            <button type="submit" style={{ ...styles.button, ...styles.saveBtn }}>
+              {szerkesztesAlatt ? "Változtatások mentése" : "Mozi mentése"}
+            </button>
+            {szerkesztesAlatt && (
+              <button 
+                type="button" 
+                style={{ ...styles.button, ...styles.cancelBtn }} 
+                onClick={() => {setSzerkesztesAlatt(false); setForm({id:'', nev:'', varos:'', ferohely:''})}}
+              >
+                Mégse
+              </button>
+            )}
+          </div>
+        </form>
+      </div>
 
-      {/* Lista Szekció */}
-      <table className="cinema-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Név</th>
-            <th>Város</th>
-            <th>Férőhely</th>
-            <th>Műveletek</th>
-          </tr>
-        </thead>
-        <tbody>
-          {cinemas.length > 0 ? (
-            cinemas.map((cinema) => (
-              <tr key={cinema.id}>
-                <td>{cinema.id}</td>
-                <td>{cinema.name}</td>
-                <td>{cinema.city}</td>
-                <td>{cinema.capacity} fő</td>
-                <td>
-                  <button onClick={() => handleEdit(cinema)} className="btn-edit">Szerkesztés</button>
-                  <button onClick={() => handleDelete(cinema.id)} className="btn-delete">Törlés</button>
+      {/* Táblázat rész */}
+      <div style={{ overflowX: 'auto' }}>
+        <table style={styles.table}>
+          <thead>
+            <tr>
+              <th style={styles.th}>ID</th>
+              <th style={styles.th}>Mozi Név</th>
+              <th style={styles.th}>Város</th>
+              <th style={styles.th}>Férőhely</th>
+              <th style={styles.th}>Műveletek</th>
+            </tr>
+          </thead>
+          <tbody>
+            {mozik.map(mozi => (
+              <tr key={mozi.id}>
+                <td style={styles.td}><strong>{mozi.id}</strong></td>
+                <td style={styles.td}>{mozi.nev}</td>
+                <td style={styles.td}>{mozi.varos}</td>
+                <td style={styles.td}>{mozi.ferohely} fő</td>
+                <td style={styles.td}>
+                  <button style={styles.actionBtn} onClick={() => handleEdit(mozi)}>Szerkeszt</button>
+                  <button 
+                    style={{ ...styles.actionBtn, color: 'white', backgroundColor: '#dc3545', border: 'none', borderRadius: '4px' }} 
+                    onClick={() => handleDelete(mozi.id)}
+                  >
+                    Töröl
+                  </button>
                 </td>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="5">Nincs megjeleníthető mozi.</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
-}
+};
 
-export default App;
+export default MoziApp;
