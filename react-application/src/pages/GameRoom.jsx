@@ -59,7 +59,7 @@ export default function GameRoom() {
   return (
     <div style={{ 
       display: 'flex', flexDirection: 'column', alignItems: 'center', 
-      justifyContent: 'center', minHeight: '100vh', backgroundColor: '#1a1a1a', color: 'white' 
+      justifyContent: 'center', minHeight: '100vh', backgroundColor: '#dfd4c3', color: 'white' 
     }}>
       <h1 style={{ marginBottom: '10px' }}>Snake Game</h1>
       <h3 style={{ marginBottom: '20px' }}>Score: {score}</h3>
