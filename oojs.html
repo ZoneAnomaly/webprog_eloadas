@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="hu">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>OOJS menü képméretező</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<header class="text-white text-center  shadow-sm">
+    <nav class="navbar ">
+        <form class="container-fluid justify-content-start">
+            <a href="index.html" class="btn btnfo btn-outline-secondary">Vissza a főoldalra</a>
+        </form>
+    </nav>
+    <div class="container">
+        <h1 class="display-5 fw-bold pagetitle">Web programozás - 1 Előadás Házi feladat</h1>
+        <h2>Saját Fotó Manipuláció (OOJS)</h2>
+
+    </div>
+</header>
+
+<div class="container photocon">
+    
+    <div class="card shadow-sm mb-4 mx-auto" style="max-width: 500px; position: relative; z-index: 1000;">
+        <div class="card-body">
+            <div class="row mb-2">
+                <div class="col-4"><input type="number" id="x" class="form-control" placeholder="X (pl. 200)"></div>
+                <div class="col-4"><input type="number" id="y" class="form-control" placeholder="Y (pl. 400)"></div>
+                <div class="col-4"><button class="btn btn-secondary w-100"
+                        onclick="myFoto.putAt(document.getElementById('x').value, document.getElementById('y').value)">Mozgat</button>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-4"><input type="number" id="width" class="form-control" placeholder="Szél."></div>
+                <div class="col-4"><input type="number" id="height" class="form-control" placeholder="Mag."></div>
+                <div class="col-4"><button class="btn btn-warning w-100"
+                        onclick="myFoto.resize(document.getElementById('width').value, document.getElementById('height').value)">Átméretez</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6"><button class="btn btn-success w-100" onclick="myFoto.show()">Megjelenít</button>
+                </div>
+                <div class="col-6"><button class="btn btn-danger w-100" onclick="myFoto.hide()">Elrejt</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="oojs_script.js"></script>
+<script>
+    var myFoto = new CimkezettFoto("sajat_foto.jpg", 50, 250, 400, 250, "Mókus fenn a fán");
+</script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+</body>
+
+<footer class="text-white text-center py-4 mt-auto">
+    <p>Kép forrása: saját fotó (Vereckei Károly)</p>
+</footer>
+
+</html>
