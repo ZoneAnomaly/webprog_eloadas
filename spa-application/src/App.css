@@ -5,7 +5,7 @@ nav button:hover { background: #21a1f1; }
 /* Számológép stílus */
 .calc-container { background: #333; display: inline-block; padding: 20px; border-radius: 10px; }
 .display { background: #47614b; color: #cfcdcd; font-size: 24px; padding: 0px; text-align: right; margin-bottom: 10px; border-radius: 5px; height: 30px; }
-.buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.buttons { align-items: left; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
 .buttons button { padding: 15px; font-size: 18px; border-radius: 5px; border: none; cursor: pointer; }
 
 /* Snake stílus */
